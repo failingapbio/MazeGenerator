@@ -6,8 +6,11 @@
 using namespace std;
 void tesselate_and_print_maze(int total_iterations) {
     //storing important variables
-    const int x_dimension = static_cast<int>(5 * pow(2, total_iterations) + 1);
-    const int y_dimension = static_cast<int>(2 * pow(2, total_iterations) + 1);
+    constexpr int base = static_cast<int>(2);
+    constexpr int cell_width = static_cast<int>(5);
+    constexpr int cell_height = static_cast<int>(2);
+    const int x_dimension = static_cast<int>(cell_width * pow(base, total_iterations) + 1);
+    const int y_dimension = static_cast<int>(cell_height * pow(base, total_iterations) + 1);
 
     bool maze[x_dimension][y_dimension];
     //make the unit square first
