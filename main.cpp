@@ -4,7 +4,7 @@
 #include <thread>
 #include <cmath>
 using namespace std;
-void tesselate_and_print_maze(int total_iterations) {
+void tessellate_and_print_maze(int total_iterations) {
     //storing important variables
     constexpr int base = static_cast<int>(2);
     constexpr int cell_width = static_cast<int>(5);
@@ -113,6 +113,6 @@ int main() {
     const int size_in_units = static_cast<int>(pow(2, number_of_iterations));
     cout << "Height of maze:" << endl;
     cout << "Your maze will be " << size_in_units << " units long and " << size_in_units << " units wide" << endl <<endl;
-    tesselate_and_print_maze(number_of_iterations);
+    tessellate_and_print_maze(number_of_iterations);
     return 0;
 }
