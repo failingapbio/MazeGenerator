@@ -4,11 +4,12 @@
 #include <thread>
 #include <cmath>
 using namespace std;
+
+constexpr int base = static_cast<int>(2);
+constexpr int cell_width = static_cast<int>(5);
+constexpr int cell_height = static_cast<int>(2);
 void tessellate_and_print_maze(int total_iterations) {
     //storing important variables
-    constexpr int base = static_cast<int>(2);
-    constexpr int cell_width = static_cast<int>(5);
-    constexpr int cell_height = static_cast<int>(2);
     const int x_dimension = static_cast<int>(cell_width * pow(base, total_iterations) + 1);
     const int y_dimension = static_cast<int>(cell_height * pow(base, total_iterations) + 1);
 
@@ -16,8 +17,8 @@ void tessellate_and_print_maze(int total_iterations) {
     //make the unit square first
     for(int y = 0; y < 3; y++) {
         for(int x = 0; x < 6; x++) {
-            if(y % 2 == 1) {
-                if ((x+1) % 5 == 1) {
+            if(y % cell_height == 1) {
+                if ((x+1) % cell_width == 1) {
                     maze[x][y] = true;
                 }
                 else {
@@ -30,7 +31,7 @@ void tessellate_and_print_maze(int total_iterations) {
         }
     }
     //Declare variables needed for expand/puncture
-    int previous_length=5, previous_height=2;
+    int previous_length=cell_width, previous_height=cell_height;
     int current_length=10, current_height=4;
     int x,y;
     //Seed random numbers
@@ -60,26 +61,28 @@ void tessellate_and_print_maze(int total_iterations) {
 
         if(no_puncture_direction != 1) {
             for(int o = 0; o < 4; o++) {
-                maze[1+5*puncture_location_1 + o][previous_height] = false;
+                maze[1+cell_width*puncture_location_1 + o][previous_height] = false;
             }
         }
 
-        if(no_puncture_direction != 2) {
+        if(no_puncture_direction != cell_height) {
             for(int o = 0; o < 4; o++) {
-                maze[(previous_length + 1 + 5 * puncture_location_2 + o)][previous_height] = false;
+                maze[(previous_length + 1 + cell_width * puncture_location_2 + o)][previous_height] = false;
             }
         }
 
         if(no_puncture_direction != 3) {
-            maze[previous_length][1+2*puncture_location_3] = false;
+            maze[previous_length][1+cell_height*puncture_location_3] = false;
         }
 
         if(no_puncture_direction != 4) {
-            maze[previous_length][previous_height+1+2*puncture_location_4] = false;
+            maze[previous_length][previous_height+1+cell_height*puncture_location_4] = false;
         }
         previous_length=current_length, previous_height=current_height;
-        current_length=current_length*2, current_height=current_height*2;
+        current_length=current_length*cell_height, current_height=current_height*cell_height;
     }
+    // final puncture at edges
+   
     //printing maze
     for(int y_print = 0; y_print < y_dimension; y_print++) {
         for(int x_print = 0; x_print < x_dimension; x_print++) {
@@ -110,7 +113,7 @@ int main() {
         cin.ignore(numeric_limits<streamsize>::max(),'\n');
         cout << "Please enter a whole number between 1 and 5:" << endl;
     }
-    const int size_in_units = static_cast<int>(pow(2, number_of_iterations));
+    const int size_in_units = static_cast<int>(pow(base, number_of_iterations));
     cout << "Height of maze:" << endl;
     cout << "Your maze will be " << size_in_units << " units long and " << size_in_units << " units wide" << endl <<endl;
     tessellate_and_print_maze(number_of_iterations);
